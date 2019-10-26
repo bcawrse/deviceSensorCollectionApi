@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using DeviceSensorApi.Models;
+using DeviceSensorApi.Services;
 
 namespace DeviceSensorApi
 {
@@ -25,6 +28,14 @@ namespace DeviceSensorApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<DeviceDatabaseSettings>(
+                Configuration.GetSection(nameof(DeviceDatabaseSettings)));
+
+            services.AddSingleton<IDeviceDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<DeviceDatabaseSettings>>().Value);
+                
+            services.AddSingleton<DeviceService>();
+                
             services.AddControllers();
         }
 
