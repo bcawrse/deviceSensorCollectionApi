@@ -16,6 +16,8 @@ using DeviceSensorApi.Models;
 using DeviceSensorApi.Services;
 using System.Reflection;
 using System.IO;
+using Microsoft.AspNetCore.Authentication;
+using DeviceSensorApi.Helpers;
 
 namespace DeviceSensorApi
 {
@@ -36,9 +38,16 @@ namespace DeviceSensorApi
 
             services.AddSingleton<IDeviceDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DeviceDatabaseSettings>>().Value);
-                
+
             services.AddSingleton<DeviceService>();
-            
+
+            // configure basic authentication 
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+            // configure DI for application services
+            services.AddScoped<IUserService, UserService>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -55,12 +64,91 @@ namespace DeviceSensorApi
                     }
                 });
 
+                c.AddSecurityDefinition("basic", new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    //OpenIdConnectUrl = new Uri("/api/authorize", UriKind.Relative),
+                    Scheme = "basic"
+                });
+
+                //c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                //{
+                //    new OpenApiSecurityScheme()
+                //    {
+                        
+                //    }
+                //})
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "basic" },
+                            Type = SecuritySchemeType.Http,
+                            OpenIdConnectUrl = new Uri("/api/authenticate/", UriKind.Relative)
+                        },
+                        new[] { "readAccess", "writeAccess" }
+                    }
+                });
+
+                //c.AddSecurityDefinition("basic", new OpenApiSecurityScheme()
+                //{
+                //    Type = SecuritySchemeType.Http,
+                //    Scheme = "basic",
+                //    author
+                //});
+
+
+
+                //c.DocumentFilter<BasicAuthenticationFilter>();
+
+                // Define the Basic scheme that's in use (i.e. Implicit Flow)
+                //c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                //{
+                //    Type = SecuritySchemeType.Http,
+                //    Flows = new OpenApiOAuthFlows
+                //    {
+                //        ClientCredentials = new OpenApiOAuthFlow
+                //        {
+                //            AuthorizationUrl = new Uri("/api/authorize", UriKind.Relative),
+                //            Scopes = new Dictionary<string, string>
+                //            {
+                //                { "readAccess", "Access read operations" },
+                //                { "writeAccess", "Access write operations" }
+                //            }
+                //        },
+                //        Implicit = new OpenApiOAuthFlow
+                //        {
+                //            AuthorizationUrl = new Uri("/api/authorize", UriKind.Relative),
+                //            Scopes = new Dictionary<string, string>
+                //            {
+                //                { "readAccess", "Access read operations" },
+                //                { "writeAccess", "Access write operations" }
+                //            }
+                //        }
+                //    }
+                //});
+
+                //c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                //    {
+                //        new OpenApiSecurityScheme
+                //        {
+                //            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+                //        },
+                //        new[] { "readAccess", "writeAccess" }
+                //    }
+                //});
+
+
+
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-            
+
             services.AddControllers();
         }
 
@@ -71,7 +159,16 @@ namespace DeviceSensorApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 

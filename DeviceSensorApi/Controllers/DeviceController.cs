@@ -1,27 +1,28 @@
 using DeviceSensorApi.Models;
 using DeviceSensorApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DeviceSensorApi.Services;
 
 namespace DeviceSensorApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
     public class DeviceController : ControllerBase
     {
         private readonly DeviceService _deviceService;
+        private readonly IUserService _userService;
 
-        public DeviceController(DeviceService deviceService)
+        public DeviceController(DeviceService deviceService, IUserService userService)
         {
             _deviceService = deviceService;
+            _userService = userService;
         }
-
-        [HttpPost]
-        public ActionResult<Device> RegisterDevice(RegisterDevice newDevice)
-        {
 
         /// <summary>
         /// Register a new device.
