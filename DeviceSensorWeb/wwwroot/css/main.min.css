@@ -78,3 +78,32 @@ body {
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
+
+.user__name {
+  font-style: italic;
+}
+
+table.data-table {
+  width: 100%;
+}
+
+table.data-table thead {
+  background-color: #0444BF;
+  color: #FFF;
+}
+
+table.data-table thead th {
+  padding: 10px;
+}
+
+table.data-table tbody tr:nth-child(even) {
+  background-color: #0584F2;
+}
+
+table.data-table tbody tr:nth-child(odd) {
+  background-color: #0AAFF1;
+}
+
+table.data-table tbody td {
+  padding: 5px 10px;
+}
