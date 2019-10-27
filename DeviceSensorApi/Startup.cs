@@ -18,6 +18,7 @@ using System.Reflection;
 using System.IO;
 using Microsoft.AspNetCore.Authentication;
 using DeviceSensorApi.Helpers;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace DeviceSensorApi
 {
@@ -102,6 +103,11 @@ namespace DeviceSensorApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             // global cors policy
             app.UseCors(x => x
