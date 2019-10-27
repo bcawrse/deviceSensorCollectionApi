@@ -1,6 +1,6 @@
 ﻿@using DeviceSensorWeb.Models
 
-@model DeviceSensorWeb.Models.DeviceViewModel
+@model DeviceSensorWeb.Models.DevicesViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -8,6 +8,9 @@
 
 <div class="row">
     <h1>Devices</h1>
+</div>
+<div class="row">
+    <p>Click a device's Serial Number for additional details</p>
 </div>
 
 <div class="row">
@@ -24,7 +27,7 @@
         @foreach (var device in Model.Devices)
         {
             <tr>
-                <td>@device.SerialNumber</td>
+                <td>@Html.ActionLink(device.SerialNumber.ToString(), "Details", "Device", new { deviceId = device.Id })</td>
                 <td>@device.RegistrationDate</td>
                 <td>@device.FirmwareVersion</td>
                 <td>@device.SensorReadings.Count()</td>

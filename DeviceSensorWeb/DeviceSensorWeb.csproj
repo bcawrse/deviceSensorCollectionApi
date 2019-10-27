@@ -16,7 +16,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
-    <PackageReference Include="mongodb" Version="1.7.1.4791" />
     <PackageReference Include="MongoDb.Driver" Version="2.9.2" />
   </ItemGroup>
 

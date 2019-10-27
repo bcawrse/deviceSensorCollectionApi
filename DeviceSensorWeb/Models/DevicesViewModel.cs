@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeviceSensorWeb.Models;
 
 namespace DeviceSensorWeb.Models
 {
-    public class DeviceViewModel
+    public class DevicesViewModel
     {
-        Device Device { get; set; }
+        public IEnumerable<Device> Devices { get; set; }
     }
 }

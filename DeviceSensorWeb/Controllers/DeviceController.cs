@@ -10,6 +10,7 @@ using DeviceSensorWeb.Models;
 
 namespace DeviceSensorWeb.Controllers
 {
+    [Authorize]
     public class DeviceController : Controller
     {
         private DeviceService _deviceService;
@@ -20,17 +21,23 @@ namespace DeviceSensorWeb.Controllers
         }
 
         // GET: Device
-        [Authorize]
         public ActionResult Index()
         {
             var devices = _deviceService.Get();
 
-            var deviceVM = new DeviceViewModel()
+            var deviceVM = new DevicesViewModel()
             {
                 Devices = devices
             };
 
             return View(deviceVM);
+        }
+
+        public ActionResult Details(string deviceId)
+        {
+            var device = _deviceService.Get(deviceId);
+
+            return View(device);
         }
 
         // GET: Device/Details/5
