@@ -33,7 +33,7 @@ namespace DeviceSensorWeb
 
             //Provide a secret key to Encrypt and Decrypt the Token
             var SecretKey = Encoding.ASCII.GetBytes
-                 ("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
+                 ("txq2Pvn6hzk36pIvkg24A9N1dyXbNuXEjPwehgH8QmWVr07xnnSoKh2N66EOyeV");
             //Configure JWT Token Authentication
             services.AddAuthentication(auth =>
             {

@@ -31,7 +31,7 @@ namespace DeviceSensorWeb
                 //Provide the security key which is given in 
                 //Startup.cs ConfigureServices() method 
                 var key = Encoding.ASCII.GetBytes
-                ("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
+                ("txq2Pvn6hzk36pIvkg24A9N1dyXbNuXEjPwehgH8QmWVr07xnnSoKh2N66EOyeV");
                 //Generate Token for user 
                 var JWToken = new JwtSecurityToken(
                     issuer: "http://localhost:45092/",
