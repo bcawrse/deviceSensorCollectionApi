@@ -60,7 +60,7 @@ namespace DeviceSensorApi
                     {
                         Name = "Ben Cawrse",
                         Email = "bcawrse@gmail.com",
-                        Url = new Uri("https://twitter.com/abenbot"),
+                        Url = new Uri("https://twitter.com/abenbot")
                     }
                 });
 
@@ -69,17 +69,11 @@ namespace DeviceSensorApi
                     In = ParameterLocation.Header,
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
-                    //OpenIdConnectUrl = new Uri("/api/authorize", UriKind.Relative),
-                    Scheme = "basic"
+                    Scheme = "basic",
+                    Description = "The Username and Password are used for BASIC authentication when executing API calls." +
+                    " If the incorrect credentials are used you'll receive a 401 status even when you appear to be logged in." +
+                    " This is because the credentials provided are used during the API calls, not to view the documentation."
                 });
-
-                //c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                //{
-                //    new OpenApiSecurityScheme()
-                //    {
-                        
-                //    }
-                //})
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                     {
@@ -92,56 +86,6 @@ namespace DeviceSensorApi
                         new[] { "readAccess", "writeAccess" }
                     }
                 });
-
-                //c.AddSecurityDefinition("basic", new OpenApiSecurityScheme()
-                //{
-                //    Type = SecuritySchemeType.Http,
-                //    Scheme = "basic",
-                //    author
-                //});
-
-
-
-                //c.DocumentFilter<BasicAuthenticationFilter>();
-
-                // Define the Basic scheme that's in use (i.e. Implicit Flow)
-                //c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                //{
-                //    Type = SecuritySchemeType.Http,
-                //    Flows = new OpenApiOAuthFlows
-                //    {
-                //        ClientCredentials = new OpenApiOAuthFlow
-                //        {
-                //            AuthorizationUrl = new Uri("/api/authorize", UriKind.Relative),
-                //            Scopes = new Dictionary<string, string>
-                //            {
-                //                { "readAccess", "Access read operations" },
-                //                { "writeAccess", "Access write operations" }
-                //            }
-                //        },
-                //        Implicit = new OpenApiOAuthFlow
-                //        {
-                //            AuthorizationUrl = new Uri("/api/authorize", UriKind.Relative),
-                //            Scopes = new Dictionary<string, string>
-                //            {
-                //                { "readAccess", "Access read operations" },
-                //                { "writeAccess", "Access write operations" }
-                //            }
-                //        }
-                //    }
-                //});
-
-                //c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                //    {
-                //        new OpenApiSecurityScheme
-                //        {
-                //            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
-                //        },
-                //        new[] { "readAccess", "writeAccess" }
-                //    }
-                //});
-
-
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
