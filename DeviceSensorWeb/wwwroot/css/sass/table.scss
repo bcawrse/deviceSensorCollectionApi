@@ -2,7 +2,7 @@ table.data-table {
     width: 100%;
 
     thead {
-        background-color: #0444BF;
+        background-color: #031323;
         color: #FFF;
 
         th {
@@ -11,11 +11,13 @@ table.data-table {
     }
     tbody {
         tr:nth-child(even) {
-            background-color: #0584F2;
+            //background-color: #0584F2;
+            background-color: #CCC;
         }
 
         tr:nth-child(odd) {
-            background-color: #0AAFF1;
+            //background-color: #0AAFF1;
+            background-color: #DDD;
         }
 
         td {
