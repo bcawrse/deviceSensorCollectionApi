@@ -47,10 +47,10 @@ namespace DeviceSensorWeb
             });
 
             // global cors policy
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            //app.UseCors(x => x
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader());
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
