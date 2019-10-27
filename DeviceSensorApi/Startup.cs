@@ -59,8 +59,7 @@ namespace DeviceSensorApi
                     Contact = new OpenApiContact
                     {
                         Name = "Ben Cawrse",
-                        Email = "bcawrse@gmail.com",
-                        Url = new Uri("https://twitter.com/abenbot")
+                        Email = "bcawrse@gmail.com"
                     }
                 });
 
