@@ -16,6 +16,8 @@ using DeviceSensorApi.Models;
 using DeviceSensorApi.Services;
 using System.Reflection;
 using System.IO;
+using Microsoft.AspNetCore.Authentication;
+using DeviceSensorApi.Helpers;
 
 namespace DeviceSensorApi
 {
@@ -36,9 +38,16 @@ namespace DeviceSensorApi
 
             services.AddSingleton<IDeviceDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DeviceDatabaseSettings>>().Value);
-                
+
             services.AddSingleton<DeviceService>();
-            
+
+            // configure basic authentication 
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+            // configure DI for application services
+            services.AddScoped<IUserService, UserService>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -50,8 +59,30 @@ namespace DeviceSensorApi
                     Contact = new OpenApiContact
                     {
                         Name = "Ben Cawrse",
-                        Email = "bcawrse@gmail.com",
-                        Url = new Uri("https://twitter.com/abenbot"),
+                        Email = "bcawrse@gmail.com"
+                    }
+                });
+
+                c.AddSecurityDefinition("basic", new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "basic",
+                    Description = "The Username and Password are used for BASIC authentication when executing API calls." +
+                    " If the incorrect credentials are used you'll receive a 401 status even when you appear to be logged in." +
+                    " This is because the credentials provided are used during the API calls, not to view the documentation."
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "basic" },
+                            Type = SecuritySchemeType.Http,
+                            OpenIdConnectUrl = new Uri("/api/authenticate/", UriKind.Relative)
+                        },
+                        new[] { "readAccess", "writeAccess" }
                     }
                 });
 
@@ -60,7 +91,7 @@ namespace DeviceSensorApi
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-            
+
             services.AddControllers();
         }
 
@@ -71,7 +102,16 @@ namespace DeviceSensorApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
