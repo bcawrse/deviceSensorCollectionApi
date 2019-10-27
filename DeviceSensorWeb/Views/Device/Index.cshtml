@@ -1,7 +1,35 @@
-﻿
+﻿@using DeviceSensorWeb.Models
+
+@model DeviceSensorWeb.Models.DeviceViewModel
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="row">
+    <h1>Devices</h1>
+</div>
 
+<div class="row">
+    <table class="data-table data-table--device">
+        <thead>
+            <tr>
+                <th>Serial Number</th>
+                <th>Registered</th>
+                <th>Firmware Version</th>
+                <th>Readings Count</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var device in Model.Devices)
+        {
+            <tr>
+                <td>@device.SerialNumber</td>
+                <td>@device.RegistrationDate</td>
+                <td>@device.FirmwareVersion</td>
+                <td>@device.SensorReadings.Count()</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

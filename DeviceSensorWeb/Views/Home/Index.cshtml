@@ -4,13 +4,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div style="padding-top:50px;"></div>
-<div style="padding-top:50px;">
+<div>
     @if (User.Identity.IsAuthenticated)
     {
         <div class="row">
-            You are Logged in as
-            <span style="font-size:large;color:forestgreen;">@User.Identity.Name</span>
+            <p>You're logged in as <span class="user__name">@User.Identity.Name</span>! Additional pages are now available</p>
+        </div>
+        <div class="row">
+            @Html.ActionLink("Devices Page", "Index", "Device", null, new { @class = "nav-link" })
         </div>
         <div class="row" style="padding-top:50px;">
             @Html.ActionLink("Log Off", "Logoff",
@@ -32,7 +33,7 @@
                             </div>
                             <div>
                                 @Html.TextBoxFor(m => m.USERID,
-                                new {@class = "form-control txtbox"})
+                                new { @class = "form-control txtbox" })
                             </div>
                             <div style="padding-top:20px;"></div>
                             <div>
@@ -41,12 +42,12 @@
                             </div>
                             <div>
                                 @Html.PasswordFor(m => m.PASSWORD,
-                                new {@class = "form-control txtbox"})
+                                new { @class = "form-control txtbox" })
                             </div>
                         </div>
-                        <div class="padding-left:35%;width:40%;">
-                            <div class="padding-top:20px;">
-                                <input class="btn btn-primary btn-lg rph-login-button" type="submit" value="Login"/>
+                        <div style="padding-left:35%;width:40%;">
+                            <div style="padding-top:20px;">
+                                <input class="btn btn-primary btn-lg rph-login-button" type="submit" value="Login" />
                             </div>
                         </div>
                     }

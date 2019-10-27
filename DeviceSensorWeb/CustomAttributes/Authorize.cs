@@ -32,7 +32,7 @@ namespace DeviceSensorWeb.CustomAttributes
 
             if (!IsAuthenticated)
             {
-                context.Result = new RedirectToActionResult("Index", "Home", new { });
+                context.Result = new RedirectToActionResult("Index", "Home", new { message = "Unauthorized" });
             }
 
             return;
