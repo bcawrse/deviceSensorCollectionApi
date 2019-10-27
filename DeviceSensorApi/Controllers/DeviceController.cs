@@ -7,6 +7,7 @@ namespace DeviceSensorApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "<Pending>")]
     public class DeviceController : ControllerBase
     {
         private readonly DeviceService _deviceService;
