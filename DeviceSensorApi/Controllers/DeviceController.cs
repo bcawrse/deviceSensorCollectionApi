@@ -2,6 +2,8 @@ using DeviceSensorApi.Models;
 using DeviceSensorApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DeviceSensorApi.Controllers
 {
@@ -21,17 +23,36 @@ namespace DeviceSensorApi.Controllers
         public ActionResult<Device> RegisterDevice(RegisterDevice newDevice)
         {
 
-            var existingDevice = _deviceService.GetBySerial(newDevice.SerialNumber);
+        /// <summary>
+        /// Register a new device.
+        /// </summary>
+        /// <param name="registerDevice">Device to register.</param>
+        /// <returns>Status and route of newly created device.</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response> 
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [HttpPost("RegisterDevice", Name = "RegisterDevice")]
+        public ActionResult<Device> RegisterDevice(RegisterDevice registerDevice)
+        {
+            if (registerDevice == null || string.IsNullOrWhiteSpace(registerDevice.FirmwareVersion) || string.IsNullOrWhiteSpace(registerDevice.SerialNumber))
+            {
+                return BadRequest(new BadRequestObjectResult(ModelState) { Value = "Must provide device SerialNumber and FirmwareVersion" });
+            }
+
+            var existingDevice = _deviceService.GetBySerial(registerDevice.SerialNumber);
 
             if (existingDevice != null)
             {
-                return BadRequest();
+                return BadRequest(new BadRequestObjectResult(ModelState) { Value = "Device already registered." });
             }
 
             var device = new Device()
             {
-                SerialNumber = newDevice.SerialNumber,
-                FirmwareVersion = newDevice.FirmwareVersion,
+                SerialNumber = registerDevice.SerialNumber,
+                FirmwareVersion = registerDevice.FirmwareVersion,
                 RegistrationDate = System.DateTime.Now
             };
 
@@ -40,10 +61,21 @@ namespace DeviceSensorApi.Controllers
             return CreatedAtRoute("GetDevice", new { id = device.Id.ToString() }, device);
         }
 
+        /// <summary>
+        /// Get collection of all existing devices in the system.
+        /// </summary>
+        /// <returns></returns>
+        [Produces("application/json")]
         [HttpGet]
         public ActionResult<List<Device>> Get() =>
             _deviceService.Get();
 
+        /// <summary>
+        /// Get a device by it's Id.
+        /// </summary>
+        /// <param name="id">Id of device.</param>
+        /// <returns></returns>
+        [Produces("application/json")]
         [HttpGet("{id:length(24)}", Name = "GetDevice")]
         public ActionResult<Device> Get(string id)
         {
@@ -57,8 +89,14 @@ namespace DeviceSensorApi.Controllers
             return device;
         }
 
-        [HttpGet("{serialNumber}")]
-        public ActionResult<Device> Get(string serialNumber)
+        /// <summary>
+        /// Retrieve a device from it's SerialNumber.
+        /// </summary>
+        /// <param name="serialNumber">Serial Number to retrieve device with.</param>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [HttpGet("GetBySerial/{serialNumber}", Name = "GetDeviceBySerial")]
+        public ActionResult<Device> GetBySerial(string serialNumber)
         {
             var device = _deviceService.GetBySerial(serialNumber);
 
@@ -70,42 +108,115 @@ namespace DeviceSensorApi.Controllers
             return device;
         }
 
-        //[HttpPost]
-        //public ActionResult<Device> Create(Device device)
-        //{
-        //    _deviceService.Create(device);
+        /// <summary>
+        /// Patch / Update an existing device
+        /// </summary>
+        /// <param name="id">Id of device to patch.</param>
+        /// <param name="deviceIn">Device details for patch.</param>
+        /// <returns></returns>
+        [HttpPatch("{id:length(24)}")]
+        public IActionResult Update(string id, Device deviceIn)
+        {
+            if (deviceIn == null)
+            {
+                return BadRequest();
+            }
 
-        //    return CreatedAtRoute("GetDevice", new { id = device.Id.ToString() }, device);
-        //}
+            var device = _deviceService.Get(id);
 
-        //[HttpPut("{id:length(24)}")]
-        //public IActionResult Update(string id, Device deviceIn)
-        //{
-        //    var device = _deviceService.Get(id);
+            if (device == null)
+            {
+                return NotFound();
+            }
 
-        //    if (device == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var existingDevice = _deviceService.Get(deviceIn.SerialNumber);
 
-        //    _deviceService.Update(id, deviceIn);
+            if (existingDevice != null)
+            {
+                return BadRequest(new BadRequestObjectResult(ModelState) { Value = "New Serial Number is already registered." });
+            }
 
-        //    return NoContent();
-        //}
+            _deviceService.Update(id, deviceIn);
 
-        //[HttpDelete("{id:length(24)}")]
-        //public IActionResult Delete(string id)
-        //{
-        //    var device = _deviceService.Get(id);
+            return NoContent();
+        }
 
-        //    if (device == null)
-        //    {
-        //        return NotFound();
-        //    }
+        /// <summary>
+        /// Delete a device.
+        /// </summary>
+        /// <param name="id">Id of device to remove.</param>
+        /// <returns></returns>
+        [HttpDelete("{id:length(24)}")]
+        public IActionResult Delete(string id)
+        {
+            var device = _deviceService.Get(id);
 
-        //    _deviceService.Remove(device.Id);
+            if (device == null)
+            {
+                return NotFound();
+            }
 
-        //    return NoContent();
-        //}
+            _deviceService.Remove(device.Id);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Add sensor reading to a Device by it's Serial Number.
+        /// </summary>
+        /// <param name="serialNumber">Serial Number of device to add sensor reading to.</param>
+        /// <param name="sensorReading">Sensor readings recorded by device.</param>
+        /// <returns></returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response> 
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [HttpPost("AddSensorReading")]
+        public IActionResult AddSensorReading(string serialNumber, SensorReadings sensorReading)
+        {
+            var device = _deviceService.GetBySerial(serialNumber);
+
+            if (device == null)
+            {
+                return NotFound();
+            }
+
+            device.SensorReadings = device.SensorReadings.Concat(new List<SensorReadings> { sensorReading });
+
+            _deviceService.Update(device.Id, device);
+
+            return CreatedAtRoute("GetDevice", new { id = device.Id.ToString() }, device);
+        }
+
+        /// <summary>
+        /// Bulk add sensor readings to a Device by it's Serial Number.
+        /// </summary>
+        /// <param name="serialNumber">Serial Number of device to add sensor readings to.</param>
+        /// <param name="sensorReadings">Group of sensor readings recorded by device.</param>
+        /// <returns></returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response> 
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [HttpPost("BulkAddSensorReadings")]
+        public IActionResult AddSensorReadings(string serialNumber, IEnumerable<SensorReadings> sensorReadings)
+        {
+            var device = _deviceService.GetBySerial(serialNumber);
+
+            if (device == null)
+            {
+                return NotFound();
+            }
+
+            device.SensorReadings = device.SensorReadings.ToList().Union(sensorReadings);
+
+            _deviceService.Update(device.Id, device);
+
+            return CreatedAtRoute("GetDevice", new { id = device.Id.ToString() }, device);
+        }
     }
 }

@@ -45,18 +45,18 @@ namespace DeviceSensorApi
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v0",
-                        Title = "Device Sensor Collection API",
-                        Description = "API for registering devices and collecting their data.",
-                        Contact = new OpenApiContact
-                        {
-                            Name = "Ben Cawrse",
-                            Email = "bcawrse@gmail.com",
-                            Url = new Uri("https://twitter.com/abenbot"),
-                        }
-                    });
+                    Title = "Device Sensor Collection API",
+                    Description = "API for registering devices and collecting their data.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Ben Cawrse",
+                        Email = "bcawrse@gmail.com",
+                        Url = new Uri("https://twitter.com/abenbot"),
+                    }
+                });
 
-            // Set the comments path for the Swagger JSON and UI.
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });

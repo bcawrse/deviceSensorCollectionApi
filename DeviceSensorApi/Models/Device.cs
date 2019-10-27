@@ -24,6 +24,8 @@ namespace DeviceSensorApi.Models
         [BsonRepresentation(BsonType.String)]
         public string FirmwareVersion { get; set; }
 
-        public IList<SensorReading> SensorReadings { get; }
+#pragma warning disable CA2227 // Collection properties should be read only
+        public IEnumerable<SensorReadings> SensorReadings { get; set; } = new List<SensorReadings>();
+#pragma warning restore CA2227 // Collection properties should be read only
     }
 }
