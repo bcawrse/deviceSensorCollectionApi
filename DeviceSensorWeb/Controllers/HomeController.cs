@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using DeviceSensorWeb.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace DeviceSensorWeb.Controllers
 {
@@ -32,6 +33,25 @@ namespace DeviceSensorWeb.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult LoginUser(User user)
+        {
+            TokenProvider _tokenProvider = new TokenProvider();
+            //Authenticate user
+            var userToken = _tokenProvider.LoginUser(user.USERID.Trim(), user.PASSWORD.Trim());
+            if (userToken != null)
+            {
+                //Save token in session object
+                HttpContext.Session.SetString("JWToken", userToken);
+            }
+
+            return Redirect("~/Home/Index");
+        }
+        public IActionResult Logoff()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("~/Home/Index");
         }
     }
 }
