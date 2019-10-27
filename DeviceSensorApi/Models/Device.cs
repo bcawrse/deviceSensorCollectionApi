@@ -12,12 +12,18 @@ namespace DeviceSensorApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
+        [BsonRequired]
+        [BsonRepresentation(BsonType.String)]
         public string SerialNumber { get; set; }
 
+        [BsonRequired]
+        [BsonRepresentation(BsonType.DateTime)]
         public DateTime RegistrationDate { get; set; }
-        
+
+        [BsonRequired]
+        [BsonRepresentation(BsonType.String)]
         public string FirmwareVersion { get; set; }
-        
-        public IList<SensorReading> SensorReadings { get; set; }
+
+        public IList<SensorReading> SensorReadings { get; }
     }
 }

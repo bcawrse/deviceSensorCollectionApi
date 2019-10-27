@@ -23,6 +23,9 @@ namespace DeviceSensorApi.Services
         public Device Get(string id) =>
             _devices.Find<Device>(device => device.Id == id).FirstOrDefault();
 
+        public Device GetBySerial(string serialNumber) =>
+            _devices.Find<Device>(device => device.SerialNumber == serialNumber).FirstOrDefault();
+
         public Device Create(Device device)
         {
             _devices.InsertOne(device);
