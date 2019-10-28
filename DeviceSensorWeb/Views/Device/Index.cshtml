@@ -50,7 +50,7 @@
                 <tbody>
                     <tr v-for="device in devices">
                         <td><a :href="deviceIdUrl(device)">{{device.serialNumber}}</a></td>
-                        <td>{{formatedDate(device.registrationDate)}}</td>
+                        <td>{{formattedDate(device.registrationDate)}}</td>
                         <td>{{device.firmwareVersion}}</td>
                         <td>{{device.sensorReadings.length}}</td>
                     </tr>
