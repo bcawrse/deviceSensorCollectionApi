@@ -20,6 +20,7 @@ namespace DeviceSensorWeb
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseUrls("http://*:6000", "https://*:6001");
                     webBuilder.UseStartup<Startup>();
                 });
     }
