@@ -184,7 +184,7 @@ namespace DeviceSensorApi.Controllers
                 return NotFound();
             }
 
-            device.SensorReadings = device.SensorReadings.Concat(new List<SensorReadings> { sensorReading });
+            device.SensorReadings = device.SensorReadings.Concat(new List<SensorReadings> { sensorReading }).OrderBy(reading => reading.ReadingDateTime);
 
             _deviceService.Update(device.Id, device);
 
@@ -213,7 +213,7 @@ namespace DeviceSensorApi.Controllers
                 return NotFound();
             }
 
-            device.SensorReadings = device.SensorReadings.ToList().Union(sensorReadings);
+            device.SensorReadings = device.SensorReadings.ToList().Union(sensorReadings).OrderBy(reading => reading.ReadingDateTime);
 
             _deviceService.Update(device.Id, device);
 

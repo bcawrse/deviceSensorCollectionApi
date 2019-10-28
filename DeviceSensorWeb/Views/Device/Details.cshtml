@@ -12,8 +12,10 @@
 
 <div id="deviceDetailsVue">
 
-    <h1>Device Details</h1>
+    @Html.ActionLink("Back to list", "Index", "Device")
 
+    <h1>Device Details</h1>
+    <p>Sensor details are updated every 5 seconds</p>
     <div class="field">
         <span class="field__label">Serial Number</span>
         <span class="field__value">@Model.SerialNumber</span>
@@ -39,7 +41,7 @@
             <canvas ref="carbonMonoxideChart" width="400" height="400"></canvas>
         </div>
 
-        @foreach (var sensorReading in Model.SensorReadings.OrderBy(sr => sr.ReadingDateTime))
+        @*@foreach (var sensorReading in Model.SensorReadings.OrderBy(sr => sr.ReadingDateTime))
         {
             <div class="field">
                 <span class="field__label">Temperature in Celcius</span>
@@ -53,9 +55,7 @@
                 <span class="field__label">Carbon Monoxide Level in PPM</span>
                 <span class="field__value">@sensorReading.CarbonMonoxideLevel</span>
             </div>
-
-
-        }
+        }*@
 
     </div>
 
@@ -73,13 +73,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var sensorReading in Model.SensorReadings)
+
+                    <tr v-for="reading in device.sensorReadings">
+                        <td>{{reading.readingDateTime}}</td>
+                        <td>{{reading.deviceHealth}}</td>
+                    </tr>
+
+                    @*@foreach (var sensorReading in Model.SensorReadings)
                     {
                         <tr>
                             <td>@sensorReading.ReadingDateTime</td>
                             <td>@sensorReading.DeviceHealth</td>
                         </tr>
-                    }
+                    }*@
                 </tbody>
             </table>
         </div>

@@ -1,4 +1,7 @@
 .chart-div {
+    display: inline-block;
     max-width: 400px !important;
     max-height: 400px !important;
+    min-width: 350px;
+    min-height: 350px;
 }
