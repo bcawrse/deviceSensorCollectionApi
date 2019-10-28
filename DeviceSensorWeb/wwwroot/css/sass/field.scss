@@ -1,0 +1,14 @@
+.field {
+    &__label {
+        font-weight: bold;
+        font-size: 18px;
+        min-width: 125px;
+
+        &::after {
+            content: ':'
+        }
+    }
+    &__value {
+
+    }
+}

@@ -1,7 +1,61 @@
-﻿
+﻿@using DeviceSensorWeb.Models
+
+@model DeviceSensorWeb.Models.DevicesViewModel
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div id="deviceVue">
+    <div>
+        <h1>Devices</h1>
+        <p>Device details are updated every 5 seconds.</p>
+        <p>Click a device's Serial Number for additional details.</p>
+    </div>
 
+    <div class="row">
+        <div v-if="!devices || !devices.hasOwnProperty('length')">
+            <table class="data-table data-table--device">
+                <thead>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Registered</th>
+                        <th>Firmware Version</th>
+                        <th>Readings Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var device in Model.Devices)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(device.SerialNumber.ToString(), "Details", "Device", new { deviceId = device.Id })</td>
+                            <td>{{formattedDate('@device.RegistrationDate.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'")')}}</td>
+                            <td>@device.FirmwareVersion</td>
+                            <td>@device.SensorReadings.Count()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div v-else>
+            <table class="data-table data-table--device">
+                <thead>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Registered</th>
+                        <th>Firmware Version</th>
+                        <th>Readings Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="device in devices">
+                        <td><a :href="deviceIdUrl(device)">{{device.serialNumber}}</a></td>
+                        <td>{{formatedDate(device.registrationDate)}}</td>
+                        <td>{{device.firmwareVersion}}</td>
+                        <td>{{device.sensorReadings.length}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

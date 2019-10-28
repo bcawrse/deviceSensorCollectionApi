@@ -1,0 +1,5 @@
+# Ignore additional build assets.
+
+wwwroot/css/main.min.css
+wwwroot/js/packages.min.js
+wwwroot/js/site.min.js

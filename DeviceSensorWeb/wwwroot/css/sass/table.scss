@@ -1,0 +1,27 @@
+table.data-table {
+    width: 100%;
+
+    thead {
+        background-color: #031323;
+        color: #FFF;
+
+        th {
+            padding: 10px;
+        }
+    }
+    tbody {
+        tr:nth-child(even) {
+            //background-color: #0584F2;
+            background-color: #CCC;
+        }
+
+        tr:nth-child(odd) {
+            //background-color: #0AAFF1;
+            background-color: #DDD;
+        }
+
+        td {
+            padding: 5px 10px;
+        }
+    }
+}

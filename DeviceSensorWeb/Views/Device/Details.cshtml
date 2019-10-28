@@ -1,0 +1,93 @@
+﻿@model DeviceSensorWeb.Models.Device
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Scripts  {
+<script type="text/javascript">
+    window.deviceDetailsId = "@Model.Id";
+</script>
+}
+
+<div id="deviceDetailsVue">
+
+    @Html.ActionLink("Back to list", "Index", "Device")
+
+    <h1>Device Details</h1>
+    <p>Sensor details are updated every 15 seconds.</p>
+    <p>Hover over the points on the graph to get time details. Graphs are set to display details scoped to a day.</p>
+    <div class="field">
+        <span class="field__label">Serial Number</span>
+        <span class="field__value">@Model.SerialNumber</span>
+    </div>
+    <div class="field">
+        <span class="field__label">Registered Date</span>
+        <span class="field__value">{{formattedDate('@Model.RegistrationDate.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'")')}}</span>
+    </div>
+    <div class="field">
+        <span class="field__label">Firmware Version</span>
+        <span class="field__value">@Model.FirmwareVersion</span>
+    </div>
+
+    <div class="sensors">
+
+        <div class="chart-div">
+            <canvas ref="celciusChart" width="350" height="350"></canvas>
+        </div>
+        <div class="chart-div">
+            <canvas ref="humidityChart" width="350" height="350"></canvas>
+        </div>
+        <div class="chart-div">
+            <canvas ref="carbonMonoxideChart" width="350" height="350"></canvas>
+        </div>
+
+        @*@foreach (var sensorReading in Model.SensorReadings.OrderBy(sr => sr.ReadingDateTime))
+        {
+            <div class="field">
+                <span class="field__label">Temperature in Celcius</span>
+                <span class="field__value">@sensorReading.TemperatureCelcius</span>
+            </div>
+            <div class="field">
+                <span class="field__label">Humidity Level Percentage</span>
+                <span class="field__value">@sensorReading.HumidityPercentage</span>
+            </div>
+            <div class="field">
+                <span class="field__label">Carbon Monoxide Level in PPM</span>
+                <span class="field__value">@sensorReading.CarbonMonoxideLevel</span>
+            </div>
+        }*@
+
+    </div>
+
+    <button class="btn btn-primary" type="button" data-toggle="collapse" href="#sensorHealth" role="button" aria-expanded="false" aria-controls="sensorHealth">
+        Sensor Health Details
+    </button>
+
+    <div class="collapse" id="sensorHealth">
+        <div class="card card-body">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date of Reading</th>
+                        <th>Device Health</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr v-for="reading in device.sensorReadings">
+                        <td>{{formattedDate(reading.readingDateTime)}}</td>
+                        <td>{{reading.deviceHealth}}</td>
+                    </tr>
+                    @*@foreach (var sensorReading in Model.SensorReadings)
+                    {
+                        <tr>
+                            <td>@sensorReading.ReadingDateTime</td>
+                            <td>@sensorReading.DeviceHealth</td>
+                        </tr>
+                    }*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

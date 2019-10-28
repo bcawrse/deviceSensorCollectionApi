@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -32,7 +33,15 @@ namespace DeviceSensorWeb.CustomAttributes
 
             if (!IsAuthenticated)
             {
-                context.Result = new RedirectToActionResult("Index", "Home", new { });
+                // 403 Unauthorized Ajax requests.
+                if (context.HttpContext.Request.IsAjaxRequest())
+                {
+                    context.HttpContext.Response.StatusCode =(int)HttpStatusCode.Forbidden;
+                }
+                else
+                {
+                    context.Result = new RedirectToActionResult("Index", "Home", new { message = "Unauthorized" });
+                }
             }
 
             return;
