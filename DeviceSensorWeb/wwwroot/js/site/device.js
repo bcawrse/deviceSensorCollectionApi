@@ -1,4 +1,4 @@
-﻿(function (deviceService) {
+﻿(function (deviceService, moment) {
 
     var elExists = document.getElementById("deviceVue");
     if (!elExists) {
@@ -30,6 +30,9 @@
             },
             deviceIdUrl: function (device) {
                 return "/device/details?deviceId=" + device.id;
+            },
+            formatedDate: function (date) {
+                return moment(date).format('MM/DD/YYYY hh:MM:SS A');
             }
         },
         mounted: function () {
@@ -37,4 +40,4 @@
         }
     });
 
-})(window.SERVICE.Devices);
+})(window.SERVICE.Devices, moment);

@@ -61,7 +61,8 @@ namespace DeviceSensorWeb
         //};
         private List<User> UserList = new List<User>
         {
-            new User { USERID = "test", PASSWORD = "test" }
+            new User { USERID = "test", PASSWORD = "test" },
+            new User { USERID = "theorem", PASSWORD = "demo" }
         };
 
         //Using hard coded collection list as Data Store for demo. 

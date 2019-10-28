@@ -140,6 +140,9 @@
                         }
                     }
                 });
+            },
+            formatedDate: function (date) {
+                return moment(date).format('MM/DD/YYYY hh:MM:SS A');
             }
         },
         mounted: function () {

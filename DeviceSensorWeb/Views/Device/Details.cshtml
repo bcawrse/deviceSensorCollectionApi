@@ -75,7 +75,7 @@
                 <tbody>
 
                     <tr v-for="reading in device.sensorReadings">
-                        <td>{{moment(reading.readingDateTime).format('MMMM do YYYY, h:mm:ss a')}}</td>
+                        <td>{{formattedDate(reading.readingDateTime)}}</td>
                         <td>{{reading.deviceHealth}}</td>
                     </tr>
                     @*@foreach (var sensorReading in Model.SensorReadings)
