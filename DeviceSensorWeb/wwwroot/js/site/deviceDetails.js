@@ -1,6 +1,12 @@
 ﻿(function (deviceService) {
 
-    var deviceId = window.deviceDetailsId;
+    var elExists = document.getElementById("deviceDetailsVue");
+
+    if (!elExists) {
+        return;
+    }
+
+    var deviceId = window.deviceDetailsId || {};
     var celciusChartCtx;
     var humidityChartCtx;
     var carbonMonoxideChartCtx;
@@ -139,8 +145,6 @@
         mounted: function () {
             if (deviceId) {
                 this.pollDevices();
-
-                
             }
         }
     });

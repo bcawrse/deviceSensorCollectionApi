@@ -32,13 +32,13 @@
     <div class="sensors">
 
         <div class="chart-div">
-            <canvas ref="celciusChart" width="400" height="400"></canvas>
+            <canvas ref="celciusChart" width="350" height="350"></canvas>
         </div>
         <div class="chart-div">
-            <canvas ref="humidityChart" width="400" height="400"></canvas>
+            <canvas ref="humidityChart" width="350" height="350"></canvas>
         </div>
         <div class="chart-div">
-            <canvas ref="carbonMonoxideChart" width="400" height="400"></canvas>
+            <canvas ref="carbonMonoxideChart" width="350" height="350"></canvas>
         </div>
 
         @*@foreach (var sensorReading in Model.SensorReadings.OrderBy(sr => sr.ReadingDateTime))
@@ -75,10 +75,9 @@
                 <tbody>
 
                     <tr v-for="reading in device.sensorReadings">
-                        <td>{{reading.readingDateTime}}</td>
+                        <td>{{moment(reading.readingDateTime).format('MMMM do YYYY, h:mm:ss a')}}</td>
                         <td>{{reading.deviceHealth}}</td>
                     </tr>
-
                     @*@foreach (var sensorReading in Model.SensorReadings)
                     {
                         <tr>
