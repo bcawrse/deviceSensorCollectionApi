@@ -29,7 +29,7 @@
                     {
                         <tr>
                             <td>@Html.ActionLink(device.SerialNumber.ToString(), "Details", "Device", new { deviceId = device.Id })</td>
-                            <td>{{formatedDate('@device.RegistrationDate.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'")')}}</td>
+                            <td>{{formattedDate('@device.RegistrationDate.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'")')}}</td>
                             <td>@device.FirmwareVersion</td>
                             <td>@device.SensorReadings.Count()</td>
                         </tr>

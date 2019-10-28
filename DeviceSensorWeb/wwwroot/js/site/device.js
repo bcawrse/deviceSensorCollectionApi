@@ -31,7 +31,7 @@
             deviceIdUrl: function (device) {
                 return "/device/details?deviceId=" + device.id;
             },
-            formatedDate: function (date) {
+            formattedDate: function (date) {
                 return moment(date).format('MM/DD/YYYY hh:MM:SS A');
             }
         },
