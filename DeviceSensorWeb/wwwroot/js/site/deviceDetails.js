@@ -24,20 +24,21 @@
         methods: {
             pollDevices: function () {
                 window.setTimeout(function () {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/Device/GetDevice',
-                        data: { Id: deviceId},
-                        cache: false,
-                        success: function (data, status, jqxhr) {
-                            this.setChartData(data);
-                        }.bind(this)
-                    });
-
+                    this.fetchDetails();
                     this.pollDevices();
-
                 }.bind(this),
                 5000);
+            },
+            fetchDetails: function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Device/GetDevice',
+                    data: { Id: deviceId },
+                    cache: false,
+                    success: function (data, status, jqxhr) {
+                        this.setChartData(data);
+                    }.bind(this)
+                });
             },
             setChartData: function(data) {
                 if (!data) {
@@ -141,12 +142,13 @@
                     }
                 });
             },
-            formatedDate: function (date) {
+            formattedDate: function (date) {
                 return moment(date).format('MM/DD/YYYY hh:MM:SS A');
             }
         },
         mounted: function () {
             if (deviceId) {
+                this.fetchDetails();
                 this.pollDevices();
             }
         }
