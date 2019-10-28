@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:js": "uglifyjs wwwroot/js/site/*.js -o wwwroot/js/site.min.js",
-    "build:packagejs": "uglifyjs node_modules/chartjs/chart.js node_modules/vue/dist/vue.min.js -o wwwroot/js/packages.min.js",
+    "build:sitejs": "uglifyjs wwwroot/js/site/*.js -o wwwroot/js/site.min.js",
+    "build:servicejs": "uglifyjs wwwroot/js/services/*.js -o wwwroot/js/services.min.js",
+    "build:packagejs": "uglifyjs node_modules/chartjs/chart.js node_modules/vue/dist/vue.js -o wwwroot/js/packages.min.js",
+    "build:js": "npm-run-all -l -p build:sitejs build:servicejs",
     "build:scss": "node-sass --output-style expanded ./wwwroot/css/sass/main.scss ./wwwroot/css/main.min.css",
-    "watch:js": "chokidar 'wwwroot/js/site/**/*.js' -c 'npm run build:js'",
-    "watch:scss": "chokidar 'wwwroot/css/sass/**/*.scss' -c 'npm run build:scss'",
     "build": "npm-run-all -l -p build:packagejs build:js build:scss",
-    "watch": "npm-run-all -l -p watch:scss watch:js"
+    "watch:sitejs": "chokidar 'wwwroot/js/site/*.js' -c 'npm run build:sitejs'",
+    "watch:servicejs": "chokidar 'wwwroot/js/services/*.js' -c 'npm run build:servicejs'",
+    "watch:scss": "chokidar 'wwwroot/css/sass/**/*.scss' -c 'npm run build:scss'",
+    "watch": "npm-run-all -l -p watch:scss watch:sitejs watch:servicejs"
   },
   "author": "Ben Cawrse",
   "license": "MIT",
