@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:sitejs": "uglifyjs wwwroot/js/site/*.js -o wwwroot/js/site.min.js",
     "build:servicejs": "uglifyjs wwwroot/js/services/*.js -o wwwroot/js/services.min.js",
-    "build:packagejs": "uglifyjs node_modules/chartjs/chart.js node_modules/vue/dist/vue.js -o wwwroot/js/packages.min.js",
+    "build:packagejs": "uglifyjs node_modules/vue/dist/vue.js -o wwwroot/js/packages.min.js",
     "build:js": "npm-run-all -l -p build:sitejs build:servicejs",
     "build:scss": "node-sass --output-style expanded ./wwwroot/css/sass/main.scss ./wwwroot/css/main.min.css",
     "build": "npm-run-all -l -p build:packagejs build:js build:scss",
@@ -27,7 +27,8 @@
     "uglify-js": "^3.6.4"
   },
   "dependencies": {
-    "chartjs": "^0.3.24",
-    "vue": "^2.6.10"
+    "chart.js": "^2.9.1",
+    "vue": "^2.6.10",
+    "vue-chartjs": "^3.4.2"
   }
 }

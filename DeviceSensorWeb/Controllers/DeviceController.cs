@@ -48,6 +48,14 @@ namespace DeviceSensorWeb.Controllers
             return devices;
         }
 
+        [HttpGet("[controller]/GetDevice")]
+        public ActionResult<Device> GetDevice(string Id)
+        {
+            var device = _deviceService.Get(Id);
+
+            return device;
+        }
+
         // GET: Device/Details/5
         //public ActionResult Details(int id)
         //{

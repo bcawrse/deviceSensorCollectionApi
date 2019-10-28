@@ -4,6 +4,12 @@
     ViewData["Title"] = "Details";
 }
 
+@section Scripts  {
+<script type="text/javascript">
+    window.deviceDetailsId = "@Model.Id";
+</script>
+}
+
 <div id="deviceDetailsVue">
 
     <h1>Device Details</h1>
@@ -23,6 +29,16 @@
 
     <div class="sensors">
 
+        <div class="chart-div">
+            <canvas ref="celciusChart" width="400" height="400"></canvas>
+        </div>
+        <div class="chart-div">
+            <canvas ref="humidityChart" width="400" height="400"></canvas>
+        </div>
+        <div class="chart-div">
+            <canvas ref="carbonMonoxideChart" width="400" height="400"></canvas>
+        </div>
+
         @foreach (var sensorReading in Model.SensorReadings.OrderBy(sr => sr.ReadingDateTime))
         {
             <div class="field">
@@ -37,9 +53,9 @@
                 <span class="field__label">Carbon Monoxide Level in PPM</span>
                 <span class="field__value">@sensorReading.CarbonMonoxideLevel</span>
             </div>
-        }
 
-        <pre>{{devices}}</pre>
+
+        }
 
     </div>
 
